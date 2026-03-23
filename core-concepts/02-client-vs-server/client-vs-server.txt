@@ -1,0 +1,233 @@
+========================================
+  LESSON 2: CLIENT VS SERVER
+========================================
+
+TOPIC: Core Concepts > Client vs Server
+
+----------------------------------------
+WHAT IS A CLIENT?
+----------------------------------------
+A CLIENT is any device or software that:
+  - SENDS a request
+  - WAITS for a response
+  - Always INITIATES the conversation
+
+Examples of Clients:
+  - Your browser (Chrome, Firefox) loading a website
+  - Instagram app fetching your feed
+  - Postman testing an API
+  - A Node.js server calling the Stripe payment API
+    (yes, a server can also be a client!)
+
+KEY RULE: Client ASKS. Server ANSWERS.
+
+----------------------------------------
+WHAT IS A SERVER?
+----------------------------------------
+A SERVER is a computer/software that:
+  - LISTENS for incoming requests 24/7
+  - PROCESSES the request
+  - SENDS BACK a response
+  - Never initiates — only waits
+
+Examples of Servers:
+  - Node.js app running on port 3000
+  - Nginx serving static HTML files
+  - PostgreSQL database on port 5432
+  - Redis cache server
+
+Servers don't have a screen — they run in data centers,
+waiting to respond to clients.
+
+----------------------------------------
+THE REQUEST-RESPONSE CYCLE
+----------------------------------------
+This is the most important concept in web dev.
+Every internet interaction follows this pattern:
+
+  CLIENT                          SERVER
+    |                               |
+    |  1. Send REQUEST              |
+    |  POST /api/login              |
+    | ---------------------------> |
+    |                               |
+    |                               |  2. Process request
+    |                               |     - Validate input
+    |                               |     - Query database
+    |                               |     - Apply business logic
+    |                               |
+    |  3. Receive RESPONSE          |
+    |  200 OK + { token: "..." }    |
+    | <--------------------------- |
+    |                               |
+    4. CLIENT uses the response
+
+----------------------------------------
+WHAT IS INSIDE A REQUEST?
+----------------------------------------
+1. URL        → where to send it
+               Example: https://api.github.com/users/ravin
+
+2. Method     → what action to perform
+               GET, POST, PUT, PATCH, DELETE
+
+3. Headers    → metadata about the request
+               Content-Type: application/json
+               Authorization: Bearer <token>
+
+4. Body       → data sent (only POST/PUT/PATCH)
+               { "email": "r@r.com", "password": "abc" }
+
+HTTP METHODS:
+  GET    → Read/fetch data          (load Twitter feed)
+  POST   → Create new data          (submit signup form)
+  PUT    → Replace entire resource  (update full profile)
+  PATCH  → Update part of resource  (update only username)
+  DELETE → Remove data              (delete a post)
+
+----------------------------------------
+WHAT IS INSIDE A RESPONSE?
+----------------------------------------
+1. Status Code → was it successful?
+2. Headers     → metadata about response
+                 Content-Type: application/json
+3. Body        → the actual data returned
+                 { "user": { "name": "Ravin" } }
+
+IMPORTANT STATUS CODES:
+  200 → OK (success)
+  201 → Created (new resource made)
+  204 → No Content (success, nothing to return)
+  301 → Moved Permanently (redirect)
+  302 → Moved Temporarily (redirect)
+  304 → Not Modified (cached content, no need to download again)
+  400 → Bad Request (client sent invalid data)
+  401 → Unauthorized (not logged in)
+  403 → Forbidden (logged in, but no permission)
+  404 → Not Found (resource doesn't exist)
+  409 → Conflict (resource already exists)
+  422 → Unprocessable Entity (validation failed)
+  429 → Too Many Requests (rate limit hit)
+  500 → Internal Server Error (server crashed)
+  502 → Bad Gateway (server down)
+  503 → Service Unavailable (server down)
+  504 → Gateway Timeout (server down)
+  505 → HTTP Version Not Supported (server down)
+  506 → Variant Also Negotiates (server down)
+  507 → Insufficient Storage (server down)
+  508 → Loop Detected (server down)
+  509 → Bandwidth Limit Exceeded (server down)
+  510 → Not Extended (server down)
+  511 → Network Authentication Required (server down)
+  599 → Network Connect Timeout Error (server down)
+  598 → Network Read Timeout Error (server down)
+  597 → Network Connect Timeout Error (server down)
+
+
+RULE: 2xx = success | 4xx = client fault | 5xx = server fault
+
+----------------------------------------
+TYPES OF CLIENTS
+----------------------------------------
+1. Browser Client
+   Chrome → GET https://youtube.com → YouTube Server
+
+2. Mobile App Client
+   Instagram App → GET /api/feed → Instagram Backend
+   (renders with native iOS/Android UI, not HTML)
+
+3. Server-to-Server (S2S) Client
+   Your Node.js App → POST api.stripe.com → Stripe Server
+   (your backend is acting as a client here!)
+
+4. CLI (Command Line Interface) / Script Client
+   curl https://api.github.com/users/octocat
+
+----------------------------------------
+TYPES OF SERVERS
+----------------------------------------
+1. Web / Application Server  → runs business logic
+                               (our Node.js Express app)
+
+2. Database Server           → stores/retrieves data
+                               (PostgreSQL on port 5432)
+
+3. File / Static Server      → serves HTML, CSS, images
+                               (Nginx, AWS S3)
+
+4. Cache Server              → fast in-memory storage
+                               (Redis on port 6379)
+
+5. Reverse Proxy Server      → Sits in front of your app servers.
+                               When a client makes a request, it hits
+                               the reverse proxy FIRST. The proxy then
+                               routes the request to the correct Node.js
+                               server. It handles security (SSL/HTTPS),
+                               caching, and load balancing (spreading
+                               traffic across multiple servers).
+                               (Examples: Nginx, HAProxy, Traefik)
+
+----------------------------------------
+REAL EXAMPLE: LOGIN FLOW
+----------------------------------------
+1. CLIENT
+   User submits form →
+   POST /api/auth/login
+   Body: { email: "ravin@gmail.com", password: "abc123" }
+   Header: { Content-Type: application/json }
+
+2. SERVER (Node.js)
+   - Validates email format and password presence
+   - Queries DB: SELECT * FROM users WHERE email = '...'
+   - Compares hashed password with bcrypt
+   - If match → generates JWT token
+   - Returns 200 OK + { token: "eyJhbGci..." }
+
+3. CLIENT
+   - Receives 200 + token
+   - Stores token in localStorage / httpOnly cookie
+   - Redirects to dashboard
+
+This happens every single time you log in to any website.
+
+----------------------------------------
+SIMULATING A CLIENT WITH CURL
+----------------------------------------
+# GET request
+curl https://jsonplaceholder.typicode.com/posts/1
+
+# POST request
+curl -X POST https://jsonplaceholder.typicode.com/posts \
+  -H "Content-Type: application/json" \
+  -d '{ "title": "Hello", "body": "World", "userId": 1 }'
+
+This is EXACTLY what your Node.js backend does when
+it calls Stripe, OpenAI, or any third-party API.
+
+----------------------------------------
+MINI EXERCISE
+----------------------------------------
+1. Open browser → go to: https://jsonplaceholder.typicode.com/posts/1
+2. Open DevTools (F12) → Network tab → Refresh
+3. Click the first request and find:
+   - What METHOD was used?
+   - What STATUS CODE came back?
+   - What is in the RESPONSE body?
+
+This is the request-response cycle happening LIVE.
+
+----------------------------------------
+KEY TAKEAWAYS
+----------------------------------------
+- Client  = initiates requests (asks)
+- Server  = listens and responds (answers)
+- Every internet action = Request → Process → Response
+- Request has: URL, Method, Headers, Body
+- Response has: Status Code, Headers, Body
+- HTTP Methods: GET(read) POST(create) PUT/PATCH(update) DELETE(remove)
+- 2xx = success | 4xx = client error | 5xx = server error
+- A SERVER can also be a CLIENT when calling another service
+
+========================================
+  END OF LESSON 2
+========================================
