@@ -1,0 +1,107 @@
+========================================
+  LESSON 1: WHAT IS A BACKEND?
+========================================
+
+TOPIC: Core Concepts > What is a Backend?
+
+----------------------------------------
+THE BIG PICTURE
+----------------------------------------
+Every web application has two sides:
+
+  FRONTEND  → What the user SEES (buttons, colors, forms)
+              Built with: HTML, CSS, JavaScript (React, Vue)
+
+  BACKEND   → What runs on the SERVER (hidden from user)
+              Built with: Node.js, Python, Java, etc.
+
+They talk to each other via APIS, sending data in JSON format.
+
+----------------------------------------
+THE RESTAURANT ANALOGY
+----------------------------------------
+  Dining area & menu   →  Frontend
+  Kitchen              →  Backend
+  Waiter               →  API
+  Pantry / Fridge      →  Database
+
+You order food → waiter (API) takes it → kitchen (backend) cooks it
+using ingredients from the fridge (database) → waiter brings it back.
+
+You never enter the kitchen. You just get results.
+THAT is how every web app works.
+
+----------------------------------------
+WHAT DOES THE BACKEND DO?
+----------------------------------------
+1. Business Logic
+   - Rules that make the app work
+   - Example: Check stock, apply discount, confirm order on Amazon
+
+2. Database Interaction
+   - Saving and reading data
+   - Example: Your username/password saved when you sign up
+
+3. Authentication & Authorization
+   - Who are you? (Authentication)
+   - What are you allowed to do? (Authorization)
+   - Example: Netflix checks your login + subscription status
+
+4. APIs (Application Programming Interface)
+   - The messenger between frontend and backend
+   - Frontend sends REQUEST → Backend returns RESPONSE (JSON)
+   - Example flow:
+       GET /api/user/profile
+       → Backend checks DB
+       → Returns { name: "Ravin", age: 25 }
+
+5. Third-party Services
+   - Stripe → payments
+   - Twilio → SMS
+   - SendGrid → emails
+
+----------------------------------------
+WHAT MAKES UP A BACKEND? (Layers)
+----------------------------------------
+  Runtime         → Node.js (where code runs)
+  Framework       → Express.js, Fastify, NestJS
+  Database        → PostgreSQL, MongoDB, MySQL
+  ORM/ODM         → Prisma, Drizzle, Mongoose
+  Authentication  → JWT, OAuth 2.0, Passport.js
+  Cache           → Redis
+  Message Queue   → BullMQ, RabbitMQ, Kafka
+  Hosting         → AWS, Docker, Railway
+
+----------------------------------------
+WHY NODE.JS?
+----------------------------------------
+- JavaScript on BOTH frontend and backend (no switching languages)
+- Non-blocking I/O → handles thousands of requests at once
+- 2 million+ npm packages (tools for everything)
+- Used by: Netflix, Uber, PayPal, LinkedIn, NASA
+
+----------------------------------------
+KEY TAKEAWAYS
+----------------------------------------
+- Backend = server-side, hidden from user
+- Frontend = client-side, visible in browser
+- They communicate via APIs (JSON format)
+- Backend sits between the frontend and the database
+- We use Node.js as our runtime
+
+----------------------------------------
+MINI EXERCISE
+----------------------------------------
+Q: When you post a photo on Instagram, list at least 5 things
+   the backend must do behind the scenes.
+
+Write your answers below:
+1.
+2.
+3.
+4.
+5.
+
+========================================
+  END OF LESSON 1
+========================================
