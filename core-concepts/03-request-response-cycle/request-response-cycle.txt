@@ -1,0 +1,91 @@
+========================================
+  LESSON 3: THE REQUEST-RESPONSE CYCLE
+========================================
+
+TOPIC: Core Concepts > Request-Response Cycle
+
+----------------------------------------
+THE 5 STEPS OF THE CYCLE
+----------------------------------------
+What happens between pressing "Enter" and the page loading?
+
+1. DNS Resolution (Where is it?)
+   Client browser asks DNS: "What is the IP for api.github.com?"
+   DNS answers: "140.82.113.3"
+
+2. TCP Handshake (Making a Connection)
+   Client and server establish a secure connection BEFORE talking.
+   Like picking up the phone and saying "Hello" to ensure the line works.
+
+3. The HTTP Request (Client Speaks)
+   Client sends the HTTP text (Method, Path, Headers, Body) over the wire.
+
+4. The Processing (Server Thinks)
+   Express.js parses the incoming text and gives us two objects:
+   - req (Request)
+   - res (Response)
+   Our code runs (checking DB, validating data, etc.)
+
+5. The HTTP Response (Server Answers)
+   Server sends back Status Code, Headers, and Data.
+   The connection is usually closed.
+
+----------------------------------------
+ANATOMY OF THE 'req' (Request) OBJECT
+----------------------------------------
+Everything the client sent us lives in 'req':
+
+  req.params   → Data in the URL path 
+                 (/users/:id → id is a param)
+  req.query    → Data in the URL after the '?' 
+                 (/search?q=shoes → q is a query)
+  req.body     → The hidden JSON payload 
+                 (Usually from a POST form)
+  req.headers  → Hidden metadata 
+                 (Like the Authorization token)
+  req.method   → The HTTP action (GET, POST, etc)
+  req.path     → Exact URL route ("/api/users")
+
+----------------------------------------
+ANATOMY OF THE 'res' (Response) OBJECT
+----------------------------------------
+Our toolbox for sending data back:
+
+  res.status(code)   → Sets the HTTP status code (e.g., 404, 200)
+  res.json(data)     → Sends JSON and ends the transaction
+  res.send(data)     → Sends raw text/HTML
+  res.cookie(...)    → Saves a cookie in the user's browser
+  res.redirect(url)  → Forces client to go to another URL
+
+** GOLDEN RULE **
+You must always send exactly ONE response to a request.
+If you forget to call res.json() or res.send(), the client
+will be stuck loading forever. If you call it twice, your app crashes.
+
+----------------------------------------
+EXPRESS.JS CODE EXAMPLE
+----------------------------------------
+app.get('/profile/:id', (req, res) => {
+    
+    // 1. Read Request
+    const userId = req.params.id;      
+    const theme = req.query.theme;
+
+    // 2. Process (Imaginary DB lookup)
+    const data = { id: userId, theme: theme };
+
+    // 3. Send Response
+    res.status(200).json(data);
+});
+
+----------------------------------------
+KEY TAKEAWAYS
+----------------------------------------
+- Cycle: DNS → TCP → Request → Express handles req/res → Response.
+- 'req' holds user input (params, query, body).
+- 'res' holds server output tools (status, json).
+- Never leave a client hanging. You must end the response.
+
+========================================
+  END OF LESSON 3
+========================================
